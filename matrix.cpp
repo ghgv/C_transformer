@@ -79,11 +79,15 @@ Matrix Matrix::operator*(const Matrix& other) {
     cout <<"M: " <<M <<" N:" << N <<" K:"<<K<<"\n";
     Matrix P =Matrix(x);
     P.data = (float *)malloc(this->dimensions[0]*M*N* sizeof(float));
-    for (int i=0; i< this->dimensions[0];i++)
-        for (int j=0; j< M; j++)
-            for (int k=0;k<N; k++){
-                for(int l=0;l<this->dimensions[this->dimensions.size()-1];l++){
-                    P.data[i*(M*N)+j*N+k]+=this->data[i*(M*N)+j*N+l]*other.data[j*(M*N)+l*N+i];
+    for (int BATCH=0; BATCH< this->dimensions[0];BATCH++)
+        for (int i=0; i< M; i++)
+            for (int j=0;j<N; j++){
+                for(int k=0;k<K;k++){
+                    /*printf("(B,i,j): (%i,%i,%i), k: %i M: %i N: %i\n",BATCH,i,j,k, M,N);
+                    printf("C:%i ",BATCH*(M*N)+i*N+j);
+                    printf(" A = %i %f   ", BATCH*(M*N)+i*N+k,this->data[BATCH*(M*N)+i*N+k]);
+                    printf(" B = %i %f \n", BATCH*(M*N)+k*N+j,other.data[BATCH*(M*N)+k*N+j]);*/
+                    P.data[BATCH*(M*N)+i*N+j]+=this->data[BATCH*(M*N)+i*N+k]*other.data[BATCH*(M*N)+k*N+j];
                 }
             }
     return P;

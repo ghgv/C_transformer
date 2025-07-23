@@ -20,6 +20,7 @@ class Matrix{
         Matrix& operator=(const Matrix& other);   // operador de asignación
         Matrix operator*(const Matrix& other);   // operador de asignación
         Matrix operator*(float escalar)  const;
+        Matrix softmax(const Matrix& other) const;
         float * data= NULL;
         friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
         void get(float *);
@@ -27,6 +28,7 @@ class Matrix{
             std::vector<int> idx(dimensions.size());
             recorrer(dimensions, idx, 0, f);
         }
+        void Recorrer(const std::vector<int>& dims,std::vector<int>& actual,int nivel);
         ~Matrix();
     private:
         void print(const char *name, Matrix *T);

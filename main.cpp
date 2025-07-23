@@ -11,6 +11,7 @@ using namespace std;
 int main(){
     auto x = std::make_tuple(2,2,2);
     auto y = std::make_tuple(2,2,2);
+    auto z = std::make_tuple(2,3,12);
 
     float X[B][T][D_MODEL] = {
         {
@@ -51,15 +52,21 @@ int main(){
 
     Matrix  I=Matrix(x);
     Matrix  Y=Matrix(y);
+    Matrix  Z=Matrix(z);
+    
     //T=Y;
     cout <<"I: "<< I;
     cout <<"Y: "<< Y;
     I.get((float*) &A);
     Y.get((float*) &AA);
+    Z.get((float*) &X);
     cout <<"I: "<< I;
     cout <<"Y: "<< Y;
+    cout <<"Z: "<< Z;
     I=I*Y;
     cout << I;
+    std::vector<int> idx(Z.dimensions.size());
+    Z.Recorrer(Z.dimensions,idx,0);
 
     return 0;
 }

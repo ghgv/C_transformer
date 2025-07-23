@@ -4,7 +4,13 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
+#include <vector>
+#include <functional>
+
+
 #include "matrix.h"
+
+using namespace std;
 
 void Matrix::print(const char *name, Matrix *T){
     printf("%s: \n",name);
@@ -64,10 +70,10 @@ Matrix Matrix::operator*(const Matrix& other) {
     }
 
     if ((other.dimensions[dimensions.size()-2] != this->dimensions[dimensions.size()-2] )||other.dimensions[dimensions.size()-1] != this->dimensions[dimensions.size()-1] ){
-        cout <<"Error, dimensions are different\n";
-        cout <<"First-First term  " <<  this->dimensions[this->dimensions.size()-2] <<"\n";
-        cout <<"Second-Second term " <<  other.dimensions[other.dimensions.size()-2]   <<"\n";
-        cout <<"Second first term  " <<  this->dimensions[this->dimensions.size()-1] <<"\n";
+        cout <<"Error, dimensions are different. ";
+        cout <<"First-First term  " <<  this->dimensions[this->dimensions.size()-2] <<". ";
+        cout <<"Second-Second term " <<  other.dimensions[other.dimensions.size()-2]   <<". ";
+        cout <<"Second first term  " <<  this->dimensions[this->dimensions.size()-1] <<". ";
         cout <<"First second term " <<  other.dimensions[other.dimensions.size()-1]   <<"\n";
         exit(-1);
     }
@@ -76,7 +82,7 @@ Matrix Matrix::operator*(const Matrix& other) {
     int N = other.dimensions[other.dimensions.size()-2];
     int K = other.dimensions[other.dimensions.size()-1];
     auto x = std::make_tuple(this->dimensions[0],M,N);
-    cout <<"M: " <<M <<" N:" << N <<" K:"<<K<<"\n";
+    
     Matrix P =Matrix(x);
     P.data = (float *)malloc(this->dimensions[0]*M*N* sizeof(float));
     for (int BATCH=0; BATCH< this->dimensions[0];BATCH++)
@@ -103,8 +109,7 @@ Matrix Matrix::operator*(float escalar) const {
     return result;
 }
 
-
-
+//This get numbers from a lineal array.
 void Matrix::get(float * M){
     int total =1; //Ojo no 0 o se queda en cero
     for (int d : dimensions) total *= d;
@@ -115,6 +120,45 @@ void Matrix::get(float * M){
     }
 }
 
+ Matrix Matrix::softmax(const Matrix& other) const{
+    /*Matrix salida(*this);
+    int B = other.dimensions[0];
+    int H = other.dimensions[1];
+    int T = other.dimensions[2];
+    int C = other.dimensions[3];
+    for (int b=0; b<B;b++)
+        for (int h=0; h<H; h++)
+            for (int t=0; t<T; t++)
+                for (int c=0; c<C; c++){
+                    salida.data[b*(H*T)+i*t+j]+=exp(this->data[b*(h*t)+i*t+k]);
+                }*/
+}
+
+void Matrix::Recorrer(const std::vector<int>& dims,std::vector<int>& actual,int nivel){
+
+    
+    std::string acumulador;
+    if(nivel==dims.size()){
+        printf("\n");
+        std::cout << acumulador;
+        for (auto a : actual){
+            printf("%i ",a);
+            for (auto b :dims)
+            printf("%f ",this->data[a*b]);
+        }
+        nivel =0;
+        return;
+    }
+    for(int n=0; n<dims[nivel]; n++){
+        actual[nivel] = n;
+        acumulador += ' ';
+        Recorrer(dimensions,actual,nivel+1);
+    }
+
+    
+
+
+}
 
 
 Matrix::~Matrix(){

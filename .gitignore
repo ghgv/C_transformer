@@ -1,5 +1,6 @@
 3d.py
 *.png
 rel
+transpose
 rel.py
 .vscode/
